@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import { StyleSheet, Text, View, TextInput, ScrollView, Image, TouchableHighlight} from 'react-native';
+import { StyleSheet, Text, View, TextInput, ScrollView, Image, TouchableHighlight, Modal} from 'react-native';
 
 export default function App() {
   const apiurl = 'http://www.omdbapi.com/?apikey=63df5a0b';
@@ -69,7 +69,25 @@ export default function App() {
           </TouchableHighlight>
         ))}
       </ScrollView>
+      <Modal 
+      animationType="fade"
+      transparent={false}
+      visible={(typeof state.selected.Title !=  "undefined")}
+      >
 
+        <View style={styles.popup}>        
+          <Text style={styles.poptitle}>{state.selected.Title}</Text>
+          <Text style={styles.poprating}>Rating: {state.selected.imdbRating}</Text>
+          <Text style = { styles.poptext}>{state.selected.Plot}</Text>
+        </View>
+
+        <TouchableHighlight onPress={() => setState(prevState => {
+          return {...prevState, selected: {}}
+        })}>
+            <Text style = {styles.closeBtn}>Close</Text>
+        </TouchableHighlight>
+
+      </Modal>
     </View>
   );
 }
@@ -116,6 +134,30 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     marginBottom: 5,
+  },
+  popup: {
+    padding: 20,
+    backgroundColor: '#2e2e2e',
+  },
+  poptitle: {
+    fontSize: 24,
+    fontWeight: '700',
+    marginBottom: 5,
+    color: '#fff'
+  },
+  closeBtn: {
+    padding: 20,
+    fontSize: 20,
+    fontWeight: '700',
+    backgroundColor: '#191414',
+    color: '#fff',
+  },
+  poptext: {
+    color: '#fff',
+  },
+  poprating: {
+    color: '#fff',
+    marginBottom: 20,
   }
 
 });
